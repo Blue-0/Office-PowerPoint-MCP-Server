@@ -11,7 +11,7 @@ services:
     restart: unless-stopped
 
     # ⚠️ Ici on ne met QUE les arguments (pas "python ppt_mcp_server.py")
-    command: ["--transport","sse","--port","8000","--host","0.0.0.0"]
+    command: ["--transport","sse","--port","8000"]
 
     environment:
       - PYTHONUNBUFFERED=1
