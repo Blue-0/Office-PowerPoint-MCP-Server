@@ -2,21 +2,27 @@ version: '3.8'
 
 services:
   ppt_mcp_server:
-    image: ppt_mcp_server:latest
     build:
       context: .
       dockerfile: Dockerfile
+    image: ppt_mcp_server:latest
     container_name: ppt_mcp_server
     ports:
       - "8000:8000"
     restart: unless-stopped
+    # on laisse la commande explicite (optionnelle car déjà dans CMD)
     command: ["python", "ppt_mcp_server.py", "--transport", "http", "--port", "8000"]
     environment:
       - PYTHONUNBUFFERED=1
+    # ⚠️ Retrait des bind-mounts fichier→fichier sur les JSON
+    # Si tu veux éditer en live tes dossiers de dev, conserve uniquement ces répertoires (ils existent dans le repo)
     volumes:
       - ./public:/app/public
       - ./tools:/app/tools
       - ./utils:/app/utils
-      # Montages fichier à fichier (assure-toi que ces fichiers existent sur l’hôte !)
-      - ./slide_layout_templates.json:/app/slide_layout_templates.json
-      - ./mcp-config.json:/app/mcp-config.json
+    # Petit plus : un healthcheck basique
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8000/ || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
