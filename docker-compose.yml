@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  ppt_mcp_server:
+    image: ppt_mcp_server:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ppt_mcp_server
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    command: ["python", "ppt_mcp_server.py", "--transport", "http", "--port", "8000"]
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./public:/app/public
+      - ./tools:/app/tools
+      - ./utils:/app/utils
+      - ./slide_layout_templates.json:/app/slide_layout_templates.json
+      - ./mcp-config.json:/app/mcp-config.json
+      # Ajoutez vos propres chemins/volumes si besoin pour les templates ou sauvegardes
+
+# Utilisation :
+# Déployez ce stack dans Portainer à la racine du repo cloné ou adaptez le chemin du Dockerfile selon l'emplacement
