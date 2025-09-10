@@ -17,9 +17,6 @@ services:
       - ./public:/app/public
       - ./tools:/app/tools
       - ./utils:/app/utils
+      # Montages fichier à fichier (assure-toi que ces fichiers existent sur l’hôte !)
       - ./slide_layout_templates.json:/app/slide_layout_templates.json
       - ./mcp-config.json:/app/mcp-config.json
-      # Ajoutez vos propres chemins/volumes si besoin pour les templates ou sauvegardes
-
-# Utilisation :
-# Déployez ce stack dans Portainer à la racine du repo cloné ou adaptez le chemin du Dockerfile selon l'emplacement
